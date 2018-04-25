@@ -218,7 +218,7 @@ func (c *Client) ReceiveWithDeadline(deadline time.Time) (*gomemcached.MCRespons
 	// Clear read deadline to avoid interference with future read operations.
 	c.conn.(net.Conn).SetReadDeadline(time.Time{})
 
-	if err != nil && resp.Status != gomemcached.KEY_ENOENT {
+	if err != nil && resp.Status != gomemcached.KEY_ENOENT && resp.Status != gomemcached.EBUSY {
 		c.setHealthy(false)
 	}
 	return resp, err
